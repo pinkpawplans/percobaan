@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Kalender Hijriah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: transparent;
+        }
+        .widget {
+            background: transparent;
+            padding: 12px 20px;
+            border-radius: 15px;
+            border: none;
+            text-align: center;
+            font-size: 1.2em; /* Ukuran diperbarui menjadi 1.2em */
+            color: #BFA88D;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget" id="hijri-date"></div>
+
+    <script>
+        function getHijriDate() {
+            // Referensi: 1 Ramadhan 1446 = 1 Maret 2025
+            const refDate = new Date(2025, 2, 1); // 1 Maret 2025
+            const refHijriDay = 1;
+            const refHijriMonth = 9; // Ramadhan
+
+            // Hitung selisih hari dari hari ini ke referensi
+            const today = new Date();
+            const diffDays = Math.floor((today - refDate) / (1000 * 60 * 60 * 24));
+
+            // Hitung tanggal Hijriah saat ini
+            let hijriDay = refHijriDay + diffDays;
+            let hijriMonth = refHijriMonth;
+            let hijriMonths = ["Muharram", "Safar", "Rabi'ul Awal", "Rabi'ul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
+
+            // Hitung pergantian bulan (bulan Islam 29 atau 30 hari)
+            while (hijriDay > 30) {
+                hijriDay -= 30;
+                hijriMonth++;
+                if (hijriMonth > 12) hijriMonth = 1;
+            }
+
+            // Tampilkan tanggal dalam format Hijriah
+            document.getElementById("hijri-date").textContent = `${hijriDay} ${hijriMonths[hijriMonth - 1]} 1446 H`;
+        }
+
+        getHijriDate();
+    </script>
+</body>
+</html>

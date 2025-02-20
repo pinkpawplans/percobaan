@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waktu Sholat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Waktu Sholat</h2>
+        <p id="location">Mendeteksi lokasi...</p>
+        <ul id="prayer-times">
+            <li>Subuh: <span id="fajr">-</span></li>
+            <li>Dzuhur: <span id="dhuhr">-</span></li>
+            <li>Ashar: <span id="asr">-</span></li>
+            <li>Maghrib: <span id="maghrib">-</span></li>
+            <li>Isya: <span id="isha">-</span></li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error);
+            } else {
+                alert("Geolokasi tidak didukung oleh browser ini.");
+            }
+        });
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`)
+                .then(response => response.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    document.getElementById('location').textContent = `Lokasi Terdeteksi: ${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+                    document.getElementById('fajr').textContent = timings.Fajr;
+                    document.getElementById('dhuhr').textContent = timings.Dhuhr;
+                    document.getElementById('asr').textContent = timings.Asr;
+                    document.getElementById('maghrib').textContent = timings.Maghrib;
+                    document.getElementById('isha').textContent = timings.Isha;
+                })
+                .catch(() => {
+                    alert("Gagal mengambil data waktu sholat.");
+                });
+        }
+
+        function error() {
+            alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
+        }
+    </script>
+</body>
+</html>

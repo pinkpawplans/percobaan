@@ -21,7 +21,7 @@
             border-radius: 15px;
             border: none;
             text-align: center;
-            font-size: 1.2em; /* Ukuran tetap 1.2em */
+            font-size: 1.2em;
             color: #BFA88D;
             font-style: italic;
         }
@@ -32,8 +32,8 @@
 
     <script>
         function getHijriDate() {
-            // Referensi: 1 Ramadhan 1446 = 2 Maret 2025
-            const refDate = new Date(2025, 2, 2); // 2 Maret 2025
+            // Referensi: 1 Ramadhan 1446 = 1 Maret 2025
+            const refDate = new Date(2025, 2, 1); // 1 Maret 2025
             const refHijriDay = 1;
             const refHijriMonth = 9; // Ramadhan
 
@@ -47,6 +47,12 @@
             let hijriMonths = ["Muharram", "Safar", "Rabi'ul Awal", "Rabi'ul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
             // Hitung pergantian bulan (bulan Islam 29 atau 30 hari)
+            while (hijriDay < 1) {
+                hijriMonth--;
+                if (hijriMonth < 1) hijriMonth = 12;
+                hijriDay += 30;
+            }
+
             while (hijriDay > 30) {
                 hijriDay -= 30;
                 hijriMonth++;
